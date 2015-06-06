@@ -1,0 +1,12 @@
+{
+  "name": "hss",
+  "version": "0.1.1",
+  "description": "Soundboard which uses websockets to communicate",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rsids/hss.git"
+  },
+  "devDependencies": {
+    "gulp": "~3.9.0"
+  }
+}
