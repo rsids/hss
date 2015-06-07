@@ -1,0 +1,82 @@
+/* !Reset */
+html {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* !Typography */
+
+html,body{
+	color:rgba(0,0,0,.5);
+	font-size: 14px;
+	margin: 0;
+	height: 0;
+	background: #000;
+    font-family: "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+}
+
+.hss {
+    display: block;
+}
+.sounds-list{
+	margin: 0;
+	padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+
+}
+
+.sound {
+    cursor: pointer;
+	text-decoration: none;
+	height: 128px;
+	width: 128px;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+	-o-transition: all .11s ease-in-out;
+	-moz-transition: all .11s ease-in-out;
+	-webkit-transition: all .11s ease-in-out;
+	text-overflow:ellipsis;
+    text-align: center;
+    align-items: center;
+	display:flex;
+    justify-content: center;
+
+}
+
+.sound:nth-child(1n+1) {
+    background:#b1ff90;
+}
+.sound:nth-child(2n+2) {
+    background:#ffe290;
+}
+.sound:nth-child(3n+3) {
+    background:#ff9090;
+}
+.sound:nth-child(4n+4) {
+    background:#d190ff;
+}
+.sound:nth-child(5n+5) {
+    background:#90a0ff;
+}
+.sound:nth-child(6n+6) {
+    background:#ff90cd;
+}
+
+.server {
+    text-align: center;
+}
+
+.server-btn {
+    margin: 50px;
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px 20px;
+    border: 0;
+    background: #ff9090;
+    color: rgba(0,0,0,.5);
+}
+
+.server-btn.active {
+    background:#b1ff90;
+}
