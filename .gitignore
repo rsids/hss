@@ -6,3 +6,5 @@ node_modules
 
 ## Don't include sounds
 app/hss/sounds/
+
+app/settings.json

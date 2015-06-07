@@ -1,21 +1,29 @@
 (function () {
     'use strict';
 
-    var serverUrl = 'http://hss.nl.dev/hss/',
-        socketUrl = 'ws://192.168.178.17:12345/socket/hssSocket.php',
+    var serverUrl,
+        socketUrl,
         socket,
-        isServer,
         channels = {},
         clientId = null;
 
     init();
 
     function init() {
-        loadSocket();
-        loadSounds();
+        loadSettings();
 
         $('.sounds-list').on('click', '.sound', onSoundClick);
         $('.server-btn').on('click', registerServer);
+    }
+
+    function loadSettings() {
+        $.getJSON('settings.json',null, function(data) {
+            serverUrl = data.server + '/hss/';
+            socketUrl  = 'ws://' + data.server + ':' + data.port + '/socket/hssSocket.php';
+            loadSocket();
+            loadSounds();
+        });
+
     }
 
     function loadSocket() {
@@ -51,8 +59,8 @@
     function loadSounds() {
         var source = $('#sound-tpl').html();
         var template = Handlebars.compile(source),
-            holder = $('.sounds-list'),
-            item;
+            holder = $('.sounds-list');
+
         $.ajax(serverUrl + 'getSounds.php').success(function(data) {
             $(data.result).each(function(i, item) {
                 var context = {title: item[1], filename: item[0]};
