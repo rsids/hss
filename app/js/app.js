@@ -88,7 +88,7 @@
 
     function registerServer() {
         if($('.server-btn').hasClass('active')) {
-            socket.send(JSON.stringify({action:'disconnectServer'}));
+            socket.send(JSON.stringify({action:'disconnect'}));
         } else {
             socket.send(JSON.stringify({action:'registerServer'}));
 

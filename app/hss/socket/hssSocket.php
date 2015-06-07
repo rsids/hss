@@ -37,7 +37,7 @@ class HiddenSocket extends WebSocket {
                 }
                 break;
             case 'disconnect':
-                $user -> type = null;
+                $user -> type = self::TYPE_LISTENER;
 		}
 	}
 }
