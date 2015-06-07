@@ -18,7 +18,7 @@
 
     function loadSettings() {
         $.getJSON('settings.json',null, function(data) {
-            serverUrl = data.server + '/hss/';
+            serverUrl = 'http://' + data.server + '/hss/';
             socketUrl  = 'ws://' + data.server + ':' + data.port + '/socket/hssSocket.php';
             loadSocket();
             loadSounds();
