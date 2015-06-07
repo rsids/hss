@@ -3,3 +3,6 @@ node_modules
 
 ## Directory-based project format:
 .idea/
+
+## Don't include sounds
+app/hss/sounds/
