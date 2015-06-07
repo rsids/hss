@@ -63,7 +63,7 @@
 
         $.ajax(serverUrl + 'getSounds.php').success(function(data) {
             $(data.result).each(function(i, item) {
-                var context = {title: item[1], filename: item[0]};
+                var context = {title: item[1], filename: item[0], idx: i%6};
                 item = template(context);
                 holder.append(item);
             });

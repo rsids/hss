@@ -44,24 +44,25 @@ html,body{
 
 }
 
-.sound:nth-child(1n+1) {
+.sound-0 {
     background:#b1ff90;
 }
-.sound:nth-child(2n+2) {
+.sound-1 {
     background:#ffe290;
 }
-.sound:nth-child(3n+3) {
+.sound-2 {
     background:#ff9090;
 }
-.sound:nth-child(4n+4) {
+.sound-3 {
     background:#d190ff;
 }
-.sound:nth-child(5n+5) {
+.sound-4 {
     background:#90a0ff;
 }
-.sound:nth-child(6n+6) {
+.sound-5 {
     background:#ff90cd;
 }
+
 
 .server {
     text-align: center;
