@@ -86,7 +86,8 @@
 
     function playSound(file, channel) {
         if(!channels.hasOwnProperty(channel)) {
-            channels[channel] = new Audio();
+            // Use video, so Android / Chrome can also play the sound :S
+            channels[channel] = document.createElement('video');
         }
 
         channels[channel].src = '/hss' + file + '.mp3';
