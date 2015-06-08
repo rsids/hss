@@ -1,5 +1,14 @@
 #!/php -q
 <?php
+
+$shortOpts  = "";
+$shortOpts .= "p::"; // port
+
+$longOpts = array(
+    'port::'
+);
+$options = getopt($shortOpts, $longOpts);
+
 // Run from command prompt > php -q quantifiedSocket.php
 date_default_timezone_set('Europe/Amsterdam');
 include 'websocket.class.php';
@@ -48,5 +57,10 @@ if(!file_exists($jsonFile)) {
 }
 $json = file_get_contents($jsonFile);
 $json = json_decode($json);
+
+
+if(array_key_exists('port', $options)) {
+    $json -> port = $options['port'];
+}
 
 $master = new HiddenSocket($json -> host, $json -> port);
