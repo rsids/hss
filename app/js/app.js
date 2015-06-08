@@ -5,11 +5,16 @@
         socketUrl,
         socket,
         channels = {},
-        clientId = null;
+        clientId = null,
+        params;
+
+
 
     init();
 
     function init() {
+        // Get get parameters
+        location.search.substr(1).split("&").forEach(function(item) {params[item.split("=")[0]] = item.split("=")[1]});
         loadSettings();
 
         $('.sounds-list').on('click', '.sound', onSoundClick);
@@ -18,6 +23,9 @@
 
     function loadSettings() {
         $.getJSON('settings.json',null, function(data) {
+            if(params.port) {
+                data.port = params.port;
+            }
             serverUrl = 'http://' + data.server + '/hss/';
             socketUrl  = 'ws://' + data.server + ':' + data.port + '/socket/hssSocket.php';
             loadSocket();
