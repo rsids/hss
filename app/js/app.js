@@ -6,7 +6,7 @@
         socket,
         channels = {},
         clientId = null,
-        params;
+        params = {};
 
 
 
