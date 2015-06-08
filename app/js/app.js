@@ -88,6 +88,7 @@
         if(!channels.hasOwnProperty(channel)) {
             // Use video, so Android / Chrome can also play the sound :S
             channels[channel] = document.createElement('video');
+            $('.invisible').append(channels[channel]);
         }
 
         channels[channel].src = '/hss' + file + '.mp3';

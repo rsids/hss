@@ -81,3 +81,11 @@ html,body{
 .server-btn.active {
     background:#b1ff90;
 }
+
+.invisible {
+    display: block;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    text-indent: -9999px;
+}
