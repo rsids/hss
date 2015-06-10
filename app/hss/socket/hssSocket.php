@@ -24,7 +24,7 @@ class HiddenSocket extends WebSocket {
 	function process(&$user,$msg){
 		$data = json_decode(trim($msg));
 	    if(!$data) {
-            error_log("Data is not an object, " . var_export($msg, true), 3, '/var/log/apache/hss_error.log');
+            error_log("Data is not an object, " . var_export($msg, true) . "\n", 3, __DIR__ . '/error.log');
         } else {
             switch ($data->action) {
 
