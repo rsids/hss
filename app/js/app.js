@@ -42,7 +42,12 @@
             socket = new WebSocket(socketUrl);
             socket.onopen = function(msg) {
                 socket.send(JSON.stringify({action:'registerClient'}));
-                console.log('Socket opened ', msg)
+                console.log('Socket opened ', msg);
+
+                if($('.server-btn').hasClass('active')) {
+                    socket.send(JSON.stringify({action:'registerServer'}));
+                }
+
             };
 
             socket.onmessage = function(msg) {
@@ -58,10 +63,6 @@
 
                 }
             };
-
-            if($('.server-btn').hasClass('active')) {
-                socket.send(JSON.stringify({action:'registerServer'}));
-            }
 
         } catch (ex) {
             console.log("exception", ex);
