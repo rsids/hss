@@ -68,7 +68,7 @@
             console.log("exception", ex);
         }
 
-        setTimeout(loadSocket, 30000);
+       // setTimeout(loadSocket, 30000);
     }
 
     function loadSounds() {
