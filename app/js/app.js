@@ -59,9 +59,15 @@
                 }
             };
 
+            if($('.server-btn').hasClass('active')) {
+                socket.send(JSON.stringify({action:'registerServer'}));
+            }
+
         } catch (ex) {
             console.log("exception", ex);
         }
+
+        setTimeout(loadSocket, 30000);
     }
 
     function loadSounds() {
