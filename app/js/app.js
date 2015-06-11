@@ -101,7 +101,7 @@
             channels[channel] = new Audio();
         }
 
-        channels[channel].src = '/hss' + file + '.mp3';
+        channels[channel].src = '/hss' + file;
         channels[channel].volume = 1;
         channels[channel].play();
     }

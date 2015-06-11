@@ -6,7 +6,7 @@
  * Time: 1:29 PM
  */
 
-$files = glob(__DIR__ . '/sounds/*.mp3');
+$files = glob(__DIR__ . '/sounds/*.{mp3,ogg}', GLOB_BRACE);
 
 array_walk($files, function(&$item) {
 
@@ -14,13 +14,13 @@ array_walk($files, function(&$item) {
 
     $afile = explode('.', $item);
     $ext = array_pop($afile);
-    if($ext === 'mp3') {
+    if($ext === 'mp3' || $ext === 'ogg') {
         $name = explode(DIRECTORY_SEPARATOR, $afile[0]);
         $name = array_pop($name);
         $name = explode('_', $name);
         $name = implode(' ', $name);
 
-        $item = array($afile[0], $name);
+        $item = array($afile[0], $name . '.' $ext);
     }
 
 });
