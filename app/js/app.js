@@ -48,6 +48,8 @@
                     socket.send(JSON.stringify({action:'registerServer'}));
                 }
 
+                setInterval(ping, 10000);
+
             };
 
             socket.onmessage = function(msg) {
@@ -68,7 +70,6 @@
             console.log("exception", ex);
         }
 
-       // setTimeout(loadSocket, 30000);
     }
 
     function loadSounds() {
@@ -89,6 +90,10 @@
         var url = $(evt.currentTarget).attr('data-name');
         console.log("Send playsound: " + url);
         socket.send(JSON.stringify({action: 'playSound', data: url, clientId: clientId}));
+    }
+
+    function ping() {
+        socket.send(JSON.stringify({action:'ping'}));
     }
 
     function playSound(file, channel) {

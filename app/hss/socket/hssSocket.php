@@ -47,6 +47,11 @@ class HiddenSocket extends WebSocket {
                         }
                     }
                     break;
+
+                case 'ping':
+                    $this->send($user->socket, json_encode((object)['msg' => "pong"]));
+
+                    break;
                 case 'disconnect':
                     $user->type = self::TYPE_LISTENER;
             }
