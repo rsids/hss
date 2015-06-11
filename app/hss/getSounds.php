@@ -20,7 +20,7 @@ array_walk($files, function(&$item) {
         $name = explode('_', $name);
         $name = implode(' ', $name);
 
-        $item = array($afile[0], $name . '.' . $ext);
+        $item = array($afile[0] . '.' . $ext, $name);
     }
 
 });
