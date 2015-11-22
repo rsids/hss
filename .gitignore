@@ -1,6 +1,6 @@
 
 ## Don't include sounds
-server/sounds/
+app/hss/sounds/
 app/settings.json
 
 node_modules
