@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="hss-main">
+    <template>
+        <style include="shared-styles"></style>
+        <style>
+            :host {
+                display: block;
+                padding: 48px 62px;
+                height: 900px;
+            }
+
+            .list-holder {
+
+                padding: 20px;
+            }
+        </style>
+        <div class="content">
+
+            <section>
+                <paper-material elevation="1" class="list-holder">
+                    <hss-list items="{{items}}" filter="{{filter}}"></hss-list>
+                </paper-material>
+
+            </section>
+
+        </div>
+
+        <iron-ajax
+            auto
+            url="{{dataUrl}}"
+            handle-as="json"
+            on-response="handleResponse"
+            last-response="{{ajaxResponse}}"
+            debounce-duration="300"></iron-ajax>
+    </template>
+
+    <script>
+        'use strict';
+        class HssMain {
+
+            beforeRegister() {
+                this.is = 'hss-main';
+                this.properties = {
+                    dataUrl: {
+                        type: String
+                    },
+                    filter: {
+                        type: String
+                    }
+                };
+            }
+
+            handleResponse() {
+                if(this.ajaxResponse.hasOwnProperty('status') && this.ajaxResponse.status === 200) {
+                    this.items = this.ajaxResponse.result;
+                }
+            }
+        }
+        Polymer(HssMain);
+
+    </script>
+
+</dom-module>

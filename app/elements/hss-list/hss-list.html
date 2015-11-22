@@ -1,0 +1,76 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<dom-module id="hss-list">
+    <template>
+        <style include="shared-styles"></style>
+        <style>
+            ul {
+                @apply(‑‑layout-justified);
+                display: block;
+                padding: 0;
+                margin: -5px 0;
+            }
+            li {
+                padding: 5px;
+                list-style-type: none;
+            }
+        </style>
+        <ul id="mainList" class="layout horizontal wrap">
+            <template is="dom-repeat" items="{{items}}" filter="{{_filter(filter)}}">
+                <li>
+                    <hss-sound-item index="{{index}}" sound="{{item}}"></hss-sound-item>
+                </li>
+            </template>
+        </ul>
+
+    </template>
+
+
+    <script>
+        'use strict';
+        class HssList {
+
+            beforeRegister() {
+                this.is = 'hss-list';
+                this.properties = {
+                    items: {
+                        type: Array,
+                        value: function() {
+                            return [];
+                        }
+                    },
+                    dataUrl: {
+                        type: String
+                    },
+                    filter: {
+                        type: String,
+                        value: () => {
+                            return '';
+                        }
+                    }
+                };
+            }
+
+            ready() {
+                addEventListener('hss-submit-search', () => {
+                    if(this.querySelectorAll('hss-sound-item').length === 1) {
+                        var soundItem = this.querySelectorAll('hss-sound-item').item(0);
+                        soundItem.onSoundClick();
+                    }
+
+                });
+            }
+
+            _filter(filter) {
+                if(filter === '') {
+                    return null;
+                }
+                return (item) => {
+                    return item[1].toLowerCase().indexOf(filter.toLowerCase()) > -1;
+                };
+            }
+        }
+        Polymer(HssList);
+    </script>
+
+</dom-module>

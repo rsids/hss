@@ -1,10 +1,10 @@
-# Dependency directory
-node_modules
-
-## Directory-based project format:
-.idea/
 
 ## Don't include sounds
 app/hss/sounds/
-
 app/settings.json
+
+node_modules
+dist
+bower_components
+.tmp
+.idea
