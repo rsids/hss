@@ -23,31 +23,39 @@ class HiddenSocket extends WebSocket {
 
 	function process(&$user,$msg){
 		$data = json_decode(trim($msg));
-	
-		switch($data -> action) {
+	    if(!$data) {
+            error_log("Data is not an object, " . var_export($msg, true) . "\n", 3, __DIR__ . '/error.log');
+        } else {
+            switch ($data->action) {
 
-            case 'registerServer':
-                $user -> type = self::TYPE_SERVER;
-                $this -> send($user->socket, json_encode((object) ['msg' => "serverRegistered"]));
-                break;
+                case 'registerServer':
+                    $user->type = self::TYPE_SERVER;
+                    $this->send($user->socket, json_encode((object)['msg' => "serverRegistered"]));
+                    break;
 
-			// Client / scale actions
-			case 'registerClient':
-				// New user registered
-				$user -> type = self::TYPE_LISTENER;
-				$this -> send($user->socket, json_encode((object) ['msg' => "clientRegistered", 'data' => ++ $this -> _ids]));
-				break;
+                // Client / scale actions
+                case 'registerClient':
+                    // New user registered
+                    $user->type = self::TYPE_LISTENER;
+                    $this->send($user->socket, json_encode((object)['msg' => "clientRegistered", 'data' => ++$this->_ids]));
+                    break;
 
-            case 'playSound':
-                foreach($this -> users as $user) {
-                    if($user -> type == self::TYPE_SERVER) {
-                        $this -> send($user -> socket, json_encode((object) array('msg' => 'playSound', 'data' => $data-> data, 'clientId' => $data -> clientId)));
+                case 'playSound':
+                    foreach ($this->users as $user) {
+                        if ($user->type == self::TYPE_SERVER) {
+                            $this->send($user->socket, json_encode((object)array('msg' => 'playSound', 'data' => $data->data, 'clientId' => $data->clientId)));
+                        }
                     }
-                }
-                break;
-            case 'disconnect':
-                $user -> type = self::TYPE_LISTENER;
-		}
+                    break;
+
+                case 'ping':
+                    $this->send($user->socket, json_encode((object)['msg' => "pong"]));
+
+                    break;
+                case 'disconnect':
+                    $user->type = self::TYPE_LISTENER;
+            }
+        }
 	}
 }
 $jsonFile = __DIR__ . '/../../settings.json';
