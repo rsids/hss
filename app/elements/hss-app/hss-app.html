@@ -1,0 +1,256 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="hss-app">
+    <template>
+        <style include="shared-styles"></style>
+        <style>
+            :host {
+                @apply(--layout-vertical);
+                display: block;
+                width: 100vw;
+                height: 100vh;
+            }
+
+            paper-scroll-header-panel {
+                position: static;
+            }
+
+            #mainToolbar .middle-container  {
+                height: 100%;
+                margin-left: 48px;
+            }
+
+            #mainToolbar:not(.tall) .middle {
+                font-size: 18px;
+                padding-bottom: 0;
+            }
+
+            #mainToolbar .bottom {
+                margin-left: 48px;
+                /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+                -webkit-transform-origin: left center;
+                transform-origin: left center;
+            }
+
+            paper-toolbar.tall .app-name {
+                font-size: 40px;
+                font-weight: 300;
+                /* Required for main area's paper-scroll-header-panel custom condensing transformation */
+                -webkit-transform-origin: left center;
+                transform-origin: left center;
+            }
+
+            .search-input {
+                --paper-input-container-input-color: white;
+                --paper-input-container-color:white;
+                margin-top:-20px;
+            }
+
+
+        </style>
+
+        <paper-scroll-header-panel main condenses keep-condensed-header>
+
+            <!-- Main Toolbar -->
+            <paper-toolbar id="mainToolbar" class="tall">
+                <span class="flex"></span>
+
+                <!-- Toolbar icons -->
+                <paper-icon-button on-click="connect" icon="{{connectionIcon}}"></paper-icon-button>
+                <paper-icon-button on-click="reconnect" icon="refresh"></paper-icon-button>
+                <paper-icon-button icon="search"></paper-icon-button>
+                <paper-input on-keyup="onKeyUp" class="search-input" noLabelFloat="true" type="search" placeholder="hiDDen" id="searchInput" value="{{query}}"></paper-input>
+
+                <!-- Application name -->
+                <div class="middle middle-container center horizontal layout">
+                    <div class="app-name">Hidden Sound System</div>
+                </div>
+
+                <!-- Application sub title -->
+                <div class="bottom bottom-container center horizontal layout">
+                    <div class="bottom-title paper-font-subhead">Dat hadden we net nodig</div>
+                </div>
+
+            </paper-toolbar>
+
+            <!-- Main Content -->
+            <hss-main data-url="{{dataUrl}}" on-play="onPlay" filter="{{query}}"></hss-main>
+
+        </paper-scroll-header-panel>
+
+
+        <iron-ajax
+                auto
+                url="/settings.json"
+                handle-as="json"
+                on-response="handleResponse"
+                last-response="{{ajaxResponse}}"
+                debounce-duration="300"></iron-ajax>
+    </template>
+
+    <script>
+        'use strict';
+
+        class HssApp {
+
+            attached() {
+                addEventListener('paper-header-transform', (e) => {
+                    var appName = document.querySelector('#mainToolbar .app-name');
+                    var middleContainer = document.querySelector('#mainToolbar .middle-container');
+                    var bottomContainer = document.querySelector('#mainToolbar .bottom-container');
+                    var detail = e.detail;
+                    var heightDiff = detail.height - detail.condensedHeight;
+                    var yRatio = Math.min(1, detail.y / heightDiff);
+                    var maxMiddleScale = 0.50;  // appName max size when condensed. The smaller the number the smaller the condensed size.
+                    var scaleMiddle = Math.max(maxMiddleScale, (heightDiff - detail.y) / (heightDiff / (1-maxMiddleScale))  + maxMiddleScale);
+                    var scaleBottom = 1 - yRatio;
+
+                    // Move/translate middleContainer
+                    Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
+
+                    // Scale bottomContainer and bottom sub title to nothing and back
+                    Polymer.Base.transform('scale(' + scaleBottom + ') translateZ(0)', bottomContainer);
+
+                    // Scale middleContainer appName
+                    Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
+                });
+
+            }
+
+            get behaviors() {
+                return [
+                    Polymer.NeonAnimatableBehavior,
+                    Polymer.NeonAnimationRunnerBehavior
+                ];
+            }
+
+            beforeRegister() {
+                this.is = 'hss-app';
+                this.isConnected = false;
+                this.connectionIcon = 'hardware:cast';
+                this.channels = {};
+                this.properties = {
+                    animationConfig: {
+                        value: () => {
+                            return {
+                                'entry': {
+                                    name: 'slide-right-animation',
+                                    node: this
+                                }
+                            };
+                        }
+                    }
+                };
+            }
+
+            ready() {
+//                this.animationConfig = [{
+//                    //entry: {
+//                        name: 'slide-right-animation',
+//                        node: this.$.searchInput
+//                    //}
+//                }];
+
+            }
+
+            connect() {
+                console.log('connect');
+                if(this.clientId) {
+
+                    let action = this.isConnected ? 'disconnect' : 'registerServer';
+                    this.socket.send(JSON.stringify({action:action}));
+                    this.isConnected = !this.isConnected;
+                    this.connectionIcon = this.isConnected ? 'hardware:cast-connected' : 'hardware:cast';
+                }
+                this.playAnimation('entry');
+            }
+
+            reconnect() {
+                if(this.serverUrl) {
+                    this.loadSocket();
+                }
+            }
+
+            /**
+             * Called when the user clicked a sound button
+             * @param e
+             */
+            onPlay(e) {
+
+                this.socket.send(JSON.stringify({
+                    action: 'playSound',
+                    data: e.detail.sound,
+                    clientId: this.clientId
+                }));
+            }
+
+            onKeyUp(e) {
+                if(e.which === 13) {
+                    this.fire('hss-submit-search', {query: e.currentTarget.value});
+                }
+            }
+
+            handleResponse() {
+                if(this.ajaxResponse) {
+                    this.serverUrl = 'http://' + this.ajaxResponse.server + '/hss/';
+                    this.socketUrl  = 'ws://' + this.ajaxResponse.server + ':' + this.ajaxResponse.port + '/socket/hssSocket.php';
+                    this.dataUrl = this.serverUrl + 'getSounds.php';
+                }
+                this.loadSocket();
+            }
+
+
+            loadSocket() {
+                if(this.socket) {
+                    this.socket.close();
+                }
+
+                try {
+                    this.socket = new WebSocket(this.socketUrl);
+                    this.socket.onopen = (msg) => {
+                        this.socket.send(JSON.stringify({action:'registerClient'}));
+                        console.log('Socket opened ', msg);
+                    };
+
+                    this.socket.onmessage = (msg) => {
+                        let data = JSON.parse(msg.data);
+
+                        switch(data.msg) {
+                            case 'clientRegistered':
+                                this.clientId = data.data;
+                                this.connect();
+                                break;
+                            case 'playSound':
+                                this.playSound(data.data, data.clientId);
+                                break;
+
+                        }
+                    };
+
+                } catch (ex) {
+                    console.log('ex', ex);
+                }
+            }
+
+            playSound(file, channel) {
+                if(!this.channels.hasOwnProperty(channel)) {
+                    this.channels[channel] = new Audio();
+                }
+
+                this.channels[channel].src = this.serverUrl + file + '.mp3';
+                this.channels[channel].volume = 1;
+                this.channels[channel].play();
+
+                if(channel !== this.clientId) {
+                    // If another client wants to play a sound,
+                    // show the ripple effect
+                    this.fire('hss-play-sound', {sound: file});
+                }
+            }
+
+        }
+        Polymer(HssApp);
+
+    </script>
+
+</dom-module>
