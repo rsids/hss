@@ -71,7 +71,7 @@ class HssApp {
     handleResponse() {
         if(this.ajaxResponse) {
             this.serverUrl = `http://${this.ajaxResponse.server}/hss/`;
-            this.socketUrl  = `ws://${this.ajaxResponse.server}:${this.ajaxResponse.port}/socket/hssSocket.php`;
+            this.socketUrl  = `ws://${this.ajaxResponse.server}:${this.ajaxResponse.port}/hss/socket/hssSocket.php`;
             this.dataUrl = this.serverUrl + 'getSounds.php';
         }
         this.loadSocket();
