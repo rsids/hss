@@ -1,0 +1,16 @@
+<md-toolbar color="primary">
+  <span>Hidden sound system</span>
+  <div class="app-toolbar">
+
+    <!--<button md-button><md-icon>refresh</md-icon></button>-->
+
+    <!--<md-input-container>-->
+      <!--<input mdInput placeholder="Zoeken" [(ngModel)]="searchString" />-->
+    <!--</md-input-container>-->
+    <!--<button md-button><md-icon>search</md-icon></button>-->
+    <button md-mini-fab (click)="toggleServer()"><md-icon>{{connectionIcon}}</md-icon></button>
+  </div>
+
+</md-toolbar>
+
+<app-list></app-list>

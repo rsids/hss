@@ -1,0 +1,31 @@
+.sound-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.sound-list li {
+    margin: 10px;
+}
+
+.sound-list li:nth-child(1n) .sound-button { background-color: #29B6F6;}
+.sound-list li:nth-child(2n) .sound-button { background-color: #26A69A;}
+.sound-list li:nth-child(3n) .sound-button { background-color: #66BB6A;}
+.sound-list li:nth-child(4n) .sound-button { background-color: #9CCC65;}
+.sound-list li:nth-child(5n) .sound-button { background-color: #D4E157;}
+.sound-list li:nth-child(6n) .sound-button { background-color: #FFEE58;}
+
+/*'#29B6F6','#26C6DA','#26A69A',
+            '#66BB6A','#9CCC65','#D4E157',
+            '#FFEE58'*/
+.sound-button {
+    line-height: 1.75;
+    white-space: normal;
+    width: 150px;
+    height: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

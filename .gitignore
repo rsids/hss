@@ -1,10 +1,9 @@
 
 ## Don't include sounds
-app/hss/sounds/
-app/settings.json
+server/sounds/
+server/socket/error.log
 
 node_modules
 dist
-bower_components
 .tmp
 .idea

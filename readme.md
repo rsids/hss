@@ -1,12 +1,28 @@
-# Hidden Sound System - Websocket version
-Plays a sound on the machine indicated as 'server'
+# Hss
 
-## Usage
-- run `npm install`
-- run `bower install`
-- run `gulp`
-- Add some mp3 files to hss/sounds
-- Create a settings.json file, add the host, port and url to the server (see settings.example.json)
-- On your server, run php hss/socket/hssSocket.php
-- Navigate in your browser to /index.html
-- Now, any browser which connects, will send the sounds to all machines
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
