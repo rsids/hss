@@ -1,0 +1,36 @@
+###############################################################################
+# Webserver port: 7901 / 80                                                   #
+###############################################################################
+version: "3.5"
+services:
+
+  webserver:
+    image: nginx:alpine
+    container_name: hss-webserver
+    working_dir: /application
+    networks:
+      - hss-default
+    volumes:
+      - ./application:/application
+      - ./logs/nginx:/var/log/nginx
+      - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 7901:80
+
+  php-fpm:
+    build: phpdocker/php-fpm
+    expose:
+      - 9000
+    ports:
+      - 5050:5050
+    container_name: hss-php-fpm
+    working_dir: /application
+    networks:
+      - hss-default
+    volumes:
+      - ./application:/application
+      - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+
+networks:
+  hss-default:
+    name: hss-default

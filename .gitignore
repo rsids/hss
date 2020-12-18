@@ -1,7 +1,8 @@
 
 ## Don't include sounds
-app/hss/sounds/
-app/settings.json
+application/vendor
+application/public/settings.json
+application/public/sounds/
 
 node_modules
 dist
