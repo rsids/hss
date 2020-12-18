@@ -3,7 +3,7 @@
 application/vendor
 application/public/settings.json
 application/public/sounds/
-
+logs
 node_modules
 dist
 bower_components
