@@ -89,7 +89,7 @@ export default {
       this.isServer = !this.isServer;
     },
     playSound(file, channel) {
-      if(!this.isServer) {
+      if(!this.isServer && !this.direct) {
         return;
       }
       if(!this.channels[channel]) {
