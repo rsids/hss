@@ -12,6 +12,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
+        v-if="!direct"
         @click="toggleServer"
         color="accent"
         small
@@ -65,11 +66,13 @@ export default {
 
       } catch (ex) {
         console.log('ex', ex);
+        this.direct = true;
       }
     })
   },
 
   data: () => ({
+    direct: false,
     socket: null,
     settings: null,
     isServer: false,
@@ -94,11 +97,15 @@ export default {
     },
 
     requestPlay(sound) {
-      console.log(sound)
-      this.socket.send(JSON.stringify({
-        action: 'playSound',
-        data: sound.file
-      }));
+      if(this.direct) {
+        this.playSound(sound.file, 1);
+      } else {
+        this.socket.send(JSON.stringify({
+          action: 'playSound',
+          data: sound.file
+        }));
+
+      }
     }
   }
 };
