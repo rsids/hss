@@ -54,6 +54,11 @@ export default {
           console.log('Socket opened ', msg);
         };
 
+        this.socket.onerror = (err) => {
+          console.error(err);
+          this.direct = true;
+        }
+
         this.socket.onmessage = (msg) => {
           let data = JSON.parse(msg.data);
           switch(data.action) {
